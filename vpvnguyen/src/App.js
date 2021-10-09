@@ -14,6 +14,8 @@ const InputText = ({ name }) => {
 };
 
 function App() {
+  const telRef = React.useRef(null);
+
   return (
     <div
       style={{
@@ -88,7 +90,22 @@ function App() {
       </div>
       <div className="border">
         <label htmlFor="tel">tel</label>
-        <input placeholder="tel" type="tel" name="tel" id="tel" />
+        <input
+          placeholder="tel"
+          type="tel"
+          name="tel"
+          id="tel"
+          onFocus={(e) => {
+            console.log("Focused on input", e.target);
+            console.log("telRef", telRef);
+            telRef.current.scrollIntoView({
+              behavior: "auto",
+              block: "center",
+              inline: "center",
+            });
+          }}
+          ref={telRef}
+        />
       </div>
       <div className="border">
         <label htmlFor="time">time</label>
