@@ -28,7 +28,6 @@ const InputText = ({ name }) => {
 //   "http://detectmobilebrowser.com/mobile"
 // );
 
-
 const ScrollIntoViewOnFocus = ({
   children,
   behavior = "auto", // smooth
@@ -39,18 +38,12 @@ const ScrollIntoViewOnFocus = ({
 
   console.log(window.navigator.userAgent);
 
-  if (window.navigator.userAgent === )
-
   return (
     <div
       style={{ border: "1px solid red" }}
       ref={ref}
       onFocus={(e) => {
-        ref.current.scrollIntoView(
-            behavior,
-            block,
-            inline,
-        );
+        ref.current.scrollIntoView(behavior, block, inline);
         // window.scrollTo({
         //   top: 100,
         //   left: 100,
