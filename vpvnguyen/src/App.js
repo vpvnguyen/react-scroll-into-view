@@ -1,8 +1,6 @@
 import React from "react";
 import "./App.css";
 
-// https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
-
 const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const InputText = ({ name }) => {
   return (
@@ -13,27 +11,28 @@ const InputText = ({ name }) => {
   );
 };
 
-const ScrollIntoViewOnFocus = ({
+const ScrollToElementOnFocus = ({
   children,
-  behavior = "auto", // smooth
-  block = "center",
-  inline = "nearest", // center
+  behavior = "smooth", // auto
+  offsetTop = 0,
+  specificDevices = [], // default all devices
 }) => {
   const ref = React.useRef(null);
 
-  console.log(window.navigator.userAgent);
+  const trimmedDevices = specificDevices.map((device) => device.trim());
+  const devicesRegex = new RegExp(trimmedDevices.join("|"), "i");
 
   return (
     <div
       style={{ border: "1px solid red" }}
       ref={ref}
       onFocus={(e) => {
-        ref.current.scrollIntoView(behavior, block, inline);
-        // window.scrollTo({
-        //   top: 100,
-        //   left: 100,
-        //   behavior: "smooth",
-        // });
+        if (devicesRegex.test(window.navigator.userAgent)) {
+          window.scrollTo({
+            behavior,
+            top: ref.current.offsetTop - offsetTop,
+          });
+        }
       }}
     >
       {children}
@@ -54,10 +53,12 @@ function App() {
         alignItems: "center",
       }}
     >
-      <div className="border">
-        <label htmlFor="text">text</label>
-        <input placeholder="text" type="text" name="text" id="text" />
-      </div>
+      <ScrollToElementOnFocus>
+        <div className="border">
+          <label htmlFor="text">text</label>
+          <input placeholder="text" type="text" name="text" id="text" />
+        </div>
+      </ScrollToElementOnFocus>
       <div className="border">
         <label htmlFor="checkbox">checkbox</label>
         <input
@@ -148,9 +149,9 @@ function App() {
         <input placeholder="week" type="week" name="week" id="week" />
       </div>
       {arr.map((item, index) => (
-        <ScrollIntoViewOnFocus behavior="smooth">
+        <ScrollToElementOnFocus behavior="smooth">
           <InputText name={`text-${index}`} />
-        </ScrollIntoViewOnFocus>
+        </ScrollToElementOnFocus>
       ))}
     </div>
   );
